@@ -34,7 +34,6 @@ function afficherInformationsProduit () {
             newOption.setAttribute("value", value.colors[i])
             newOption.innerText = value.colors[i]
             colorsProduct.appendChild(newOption)
-            console.log(colorsProduct)
         }
     })
     .catch(function(err) {
