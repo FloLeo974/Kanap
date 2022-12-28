@@ -1,7 +1,7 @@
 // On cible l'élément du DOM
 const items = document.getElementById("items")
 
-//On récupère les informations des produits au niveau de l'API et on affiche tous les produits
+// On récupère les informations des produits au niveau de l'API et on affiche tous les produits
 function afficherProduits () {
     fetch("http://localhost:3000/api/products")
     .then(function(res) {
