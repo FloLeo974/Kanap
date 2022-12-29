@@ -15,20 +15,20 @@ const boutonAjouter = document.getElementById("addToCart")
 
 /* GESTION DE L'AFFICHAGE */
 // On crée une fonction pour afficher les informations du produit sur la page
-function afficherInformationsProduit (value) {
+function afficherInformationsProduit (e) {
     let newImage = document.createElement('img')
-    newImage.setAttribute("src", value.imageUrl)
-    newImage.setAttribute("alt", value.altTxt)
+    newImage.setAttribute("src", e.imageUrl)
+    newImage.setAttribute("alt", e.altTxt)
     imageProduct.appendChild(newImage)
 
-    nameProduct.innerText = value.name
-    priceProduct.innerText = value.price
-    descriptionProduct.innerText = value.description
+    nameProduct.innerText = e.name
+    priceProduct.innerText = e.price
+    descriptionProduct.innerText = e.description
 
-    for (let i in value.colors) {
+    for (let i in e.colors) {
         let newOption = document.createElement('option')
-        newOption.setAttribute("value", value.colors[i])
-        newOption.innerText = value.colors[i]
+        newOption.setAttribute("value", e.colors[i])
+        newOption.innerText = e.colors[i]
         colorsProduct.appendChild(newOption)
     }
 }
@@ -49,7 +49,6 @@ function recuperationInformationsProduit () {
     })
 }
 
-// On appelle la fonction qui récupère puis affiche les informations du produit au chargement de la page
 recuperationInformationsProduit ()
 
 /* GESTION DU PANIER: */
