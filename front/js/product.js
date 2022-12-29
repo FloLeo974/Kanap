@@ -73,7 +73,15 @@ function remplirPanier () {
         let existingProduct = (element) => element.id == idProduct && element.color == colorProductSelected // recherche du produit dans l'array
         let existingProductIndex = contenuPanier.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
         if (existingProductIndex == -1) { // si le produit n'est pas encore présent dans le panier
-        contenuPanier.push({ id: idProduct, quantity: quantityProduct, color: colorProductSelected })// ajout d'une ligne dans l'array avec le contenu ajouté
+        contenuPanier.push({ 
+            id: idProduct,
+            quantity: quantityProduct,
+            color: colorProductSelected ,
+            name: nameProduct.textContent,
+            price: Number(priceProduct.textContent),
+            imageUrl: document.querySelector(".item__img > img").getAttribute("src"),
+            altTxt: document.querySelector(".item__img > img").getAttribute("alt")
+            })// ajout d'une ligne dans l'array avec le contenu ajouté
         }
         else { // si le produit est déjà dans le panier
             contenuPanier[existingProductIndex].quantity += quantityProduct // addition de la nouvelle quantité à la précédente
@@ -92,3 +100,4 @@ boutonAjouter.addEventListener('click', function(){ // écoute du clic sur le bo
     let contenuPanierJson = JSON.parse(contenuPanierLinea); // mis en format javascript
     console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 })
+
