@@ -41,12 +41,41 @@ function afficherPanier(product) {
     newDivContentDescription.appendChild(newColor)
 
     let newPrice = document.createElement('p')
-    newColor.innerHTML = contenuPanierJson[product].price + " €"
+    newPrice.innerHTML = contenuPanierJson[product].price + " €"
     newDivContentDescription.appendChild(newPrice)
+
+    let newDivContentSettings = document.createElement('div')
+    newDivContentSettings.classList.add("cart__item__content__settings")
+    newDivContent.appendChild(newDivContentSettings)
+
+    let newDivContentSettingsQuantity = document.createElement('div')
+    newDivContentSettingsQuantity.classList.add("cart__item__content__settings__quantity")
+    newDivContentSettings.appendChild(newDivContentSettingsQuantity)
+
+    let newQuantity = document.createElement('p')
+    newQuantity.innerText = "Qté : "
+    newDivContentSettingsQuantity.appendChild(newQuantity)
+
+    let newInputQuantity = document.createElement('input')
+    newInputQuantity.setAttribute("type", "number")
+    newInputQuantity.setAttribute("class", "itemQuantity")
+    newInputQuantity.setAttribute("name", "itemQuantity")
+    newInputQuantity.setAttribute("min", 1)
+    newInputQuantity.setAttribute("max", 100)
+    newInputQuantity.setAttribute("value", contenuPanierJson[product].quantity)
+    newDivContentSettingsQuantity.appendChild(newInputQuantity)
+
+    let newDivContentSettingsDelete = document.createElement('div')
+    newDivContentSettingsDelete.classList.add("cart__item__content__settings__delete")
+    newDivContentSettings.appendChild(newDivContentSettingsDelete)
+
+    let newDeleteItem = document.createElement('p')
+    newDeleteItem.classList.add("deleteItem")
+    newDeleteItem.innerText = "Supprimer"
+    newDivContentSettingsDelete.appendChild(newDeleteItem)
 }
 
 // On parcourt l'array et on utilise la fonction d'affichage
-
 for (let i in contenuPanierJson) {
     afficherPanier(i)
 }
