@@ -2,28 +2,28 @@
 const items = document.getElementById("items")
 
 // On crée une fonction pour afficher tous les produits
-function afficherProduits(e) {
-    for (let i in e){
+function afficherProduits(product) {
+    for (let i in product){
         let newLien = document.createElement('a')
-        newLien.setAttribute("href", "./product.html?id=" + e[i]._id)
+        newLien.setAttribute("href", "./product.html?id=" + product[i]._id)
         items.appendChild(newLien)
 
         let newArticle = document.createElement('article')
         newLien.appendChild(newArticle)
 
         let newImage = document.createElement('img')
-        newImage.setAttribute("src", e[i].imageUrl)
-        newImage.setAttribute("alt", e[i].altTxt)
+        newImage.setAttribute("src", product[i].imageUrl)
+        newImage.setAttribute("alt", product[i].altTxt)
         newArticle.appendChild(newImage)
 
         let newName = document.createElement('h3')
         newName.classList.add("productName")
-        newName.innerHTML = e[i].name
+        newName.innerHTML = product[i].name
         newArticle.appendChild(newName)
 
         let newDescription = document.createElement('p')
         newDescription.classList.add("productDescription")
-        newDescription.innerText = e[i].description
+        newDescription.innerText = product[i].description
         newArticle.appendChild(newDescription)
     }
 }

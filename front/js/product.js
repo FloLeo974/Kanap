@@ -15,26 +15,26 @@ const boutonAjouter = document.getElementById("addToCart")
 
 /* GESTION DE L'AFFICHAGE */
 // On crée une fonction pour afficher les informations du produit sur la page
-function afficherInformationsProduit (e) {
+function afficherInformationsProduit (product) {
     let newImage = document.createElement('img')
-    newImage.setAttribute("src", e.imageUrl)
-    newImage.setAttribute("alt", e.altTxt)
+    newImage.setAttribute("src", product.imageUrl)
+    newImage.setAttribute("alt", product.altTxt)
     imageProduct.appendChild(newImage)
 
-    nameProduct.innerText = e.name
-    priceProduct.innerText = e.price
-    descriptionProduct.innerText = e.description
+    nameProduct.innerText = product.name
+    priceProduct.innerText = product.price
+    descriptionProduct.innerText = product.description
 
-    for (let i in e.colors) {
+    for (let i in product.colors) {
         let newOption = document.createElement('option')
-        newOption.setAttribute("value", e.colors[i])
-        newOption.innerText = e.colors[i]
+        newOption.setAttribute("value", product.colors[i])
+        newOption.innerText = product.colors[i]
         colorsProduct.appendChild(newOption)
     }
 }
 
 // On récupère les informations du produit au niveau de l'API à partir de son id et on appelle la fonction d'affichage
-function recuperationInformationsProduit () {
+function recupererInformationsProduit () {
     fetch("http://localhost:3000/api/products/"+idProduct)
     .then(function(res) {
         if (res.ok) {
@@ -49,7 +49,7 @@ function recuperationInformationsProduit () {
     })
 }
 
-recuperationInformationsProduit ()
+recupererInformationsProduit ()
 
 /* GESTION DU PANIER: */
 // On récupére l'array qui contient les produits ajoutés au panier 
