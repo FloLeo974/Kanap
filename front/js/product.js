@@ -13,8 +13,28 @@ const colorsProduct = document.getElementById("colors")
 
 const boutonAjouter = document.getElementById("addToCart")
 
-// On récupère les informations du produit au niveau de l'API à partir de son id et on affiche les informations
-function afficherInformationsProduit () {
+/* GESTION DE L'AFFICHAGE */
+// On crée une fonction pour afficher les informations du produit sur la page
+function afficherInformationsProduit (value) {
+    let newImage = document.createElement('img')
+    newImage.setAttribute("src", value.imageUrl)
+    newImage.setAttribute("alt", value.altTxt)
+    imageProduct.appendChild(newImage)
+
+    nameProduct.innerText = value.name
+    priceProduct.innerText = value.price
+    descriptionProduct.innerText = value.description
+
+    for (let i in value.colors) {
+        let newOption = document.createElement('option')
+        newOption.setAttribute("value", value.colors[i])
+        newOption.innerText = value.colors[i]
+        colorsProduct.appendChild(newOption)
+    }
+}
+
+// On récupère les informations du produit au niveau de l'API à partir de son id et on appelle la fonction d'affichage
+function recuperationInformationsProduit () {
     fetch("http://localhost:3000/api/products/"+idProduct)
     .then(function(res) {
         if (res.ok) {
@@ -22,29 +42,17 @@ function afficherInformationsProduit () {
         }
     })
     .then(function(value) {
-        let newImage = document.createElement('img')
-        newImage.setAttribute("src", value.imageUrl)
-        newImage.setAttribute("alt", value.altTxt)
-        imageProduct.appendChild(newImage)
-
-        nameProduct.innerText = value.name
-        priceProduct.innerText = value.price
-        descriptionProduct.innerText = value.description
-
-        for (let i in value.colors) {
-            let newOption = document.createElement('option')
-            newOption.setAttribute("value", value.colors[i])
-            newOption.innerText = value.colors[i]
-            colorsProduct.appendChild(newOption)
-        }
+        afficherInformationsProduit(value)
     })
     .catch(function(err) {
         console.log("erreur")
     })
 }
 
-afficherInformationsProduit ()
+// On appelle la fonction qui récupère puis affiche les informations du produit au chargement de la page
+recuperationInformationsProduit ()
 
+/* GESTION DU PANIER: */
 // On récupére l'array qui contient les produits ajoutés au panier 
 // Ou on le crée s'il n'existe pas encore dans le local storage
 let contenuAjout = JSON.parse(localStorage.getItem("obj")) || []
