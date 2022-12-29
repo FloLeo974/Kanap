@@ -1,5 +1,7 @@
 // On cible les éléments du DOM:
 const productInformations = document.getElementById("cart__items")
+const totalQuantity = document.getElementById("totalQuantity")
+const totalPrice = document.getElementById("totalPrice")
 
 // On récupère le panier mémorisé dans le local storage
 let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
@@ -7,7 +9,6 @@ let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'obje
 console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 
 // On crée une fonction qui crée et insère les éléments dans la page
-
 function afficherPanier(product) {
     let newArticle = document.createElement('article')
     newArticle.classList.add("cart__item")
@@ -79,3 +80,16 @@ function afficherPanier(product) {
 for (let i in contenuPanierJson) {
     afficherPanier(i)
 }
+
+// On calcule le prix total du panier et le nombre de produits contenus
+function calculTotaux () {
+    let quantity = 0
+    let price = 0
+    for (let i in contenuPanierJson) {
+        quantity += contenuPanierJson[i].quantity
+        price += contenuPanierJson[i].price
+    }
+    totalQuantity.innerHTML = quantity
+    totalPrice.innerHTML = price
+}
+calculTotaux()
