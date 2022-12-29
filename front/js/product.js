@@ -49,8 +49,14 @@ afficherInformationsProduit ()
 // Ou on le crée s'il n'existe pas encore dans le local storage
 let contenuAjout = JSON.parse(localStorage.getItem("obj")) || []
 
-// On gère le remplissage du panier et on enregistre son contenu dans le local storage
-function ajoutPanier () {
+// On crée une fonction pour mémoriser le contenu du panier dans le local storage
+function memoriserPanier() {
+    let contenuAjoutLinea = JSON.stringify(contenuAjout) // mis en format json
+    localStorage.setItem("obj", contenuAjoutLinea) // stockage dans le local storage
+}
+
+// On gère le remplissage du panier
+function remplissagePanier () {
     let quantityProduct = Number(document.getElementById("quantity").value) // quantité saisie
     let colorProductSelected = colorsProduct.options[colorsProduct.selectedIndex].value //couleur sélectionée
     if (quantityProduct < 1 || quantityProduct > 100 || colorProductSelected == "") { // vérification de la validité des données du panier
@@ -67,14 +73,12 @@ function ajoutPanier () {
         }
         alert("Votre produit a été ajouté au panier") // message de succés pour l'utilisateur
     }
-
-    let contenuAjoutLinea = JSON.stringify(contenuAjout) // mis en format json
-    localStorage.setItem("obj", contenuAjoutLinea) // stockage dans le local storage
+    memoriserPanier()
 }
 
 // On met à jour le panier au clic
 boutonAjouter.addEventListener('click', function(){ // écoute du clic sur le bouton
-    ajoutPanier() // activation de la fonction d'ajout au panier
+    remplissagePanier() // activation de la fonction de remplissage du panier
 
     // A RETIRER UNE FOIS TERMINE: JUSTE POUR VOIR LE RESULTAT DANS LA CONSOLE:
     let contenuAjoutLinea = localStorage.getItem("obj"); // récupération des données stockées (pour tester mais sinon dans cart.js)
