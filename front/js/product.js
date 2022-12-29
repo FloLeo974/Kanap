@@ -63,7 +63,7 @@ function memoriserPanier() {
 }
 
 // On gère le remplissage du panier
-function remplissagePanier () {
+function remplirPanier () {
     let quantityProduct = Number(document.getElementById("quantity").value) // quantité saisie
     let colorProductSelected = colorsProduct.options[colorsProduct.selectedIndex].value //couleur sélectionée
     if (quantityProduct < 1 || quantityProduct > 100 || colorProductSelected == "") { // vérification de la validité des données du panier
@@ -85,7 +85,7 @@ function remplissagePanier () {
 
 // On met à jour le panier au clic
 boutonAjouter.addEventListener('click', function(){ // écoute du clic sur le bouton
-    remplissagePanier() // activation de la fonction de remplissage du panier
+    remplirPanier() // activation de la fonction de remplissage du panier
 
     // A RETIRER UNE FOIS TERMINE: JUSTE POUR VOIR LE RESULTAT DANS LA CONSOLE:
     let contenuAjoutLinea = localStorage.getItem("obj"); // récupération des données stockées (pour tester mais sinon dans cart.js)
