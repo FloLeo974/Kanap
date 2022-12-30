@@ -87,7 +87,7 @@ function calculTotaux () {
     let price = 0
     for (let i in contenuPanierJson) {
         quantity += contenuPanierJson[i].quantity
-        price += contenuPanierJson[i].price
+        price += contenuPanierJson[i].price * contenuPanierJson[i].quantity
     }
     totalQuantity.innerHTML = quantity
     totalPrice.innerHTML = price
