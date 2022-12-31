@@ -42,7 +42,18 @@ function afficherPanier(product) {
     newDivContentDescription.appendChild(newColor)
 
     let newPrice = document.createElement('p')
-    newPrice.innerHTML = contenuPanierJson[product].price + " €"
+    fetch("http://localhost:3000/api/products/" + contenuPanierJson[product].id)
+            .then(function(res) {
+                if (res.ok) {
+                return res.json()
+                }
+            })
+            .then(function(value) {
+                newPrice.innerHTML = value.price + " €"
+            })
+            .catch(function(err) {
+                console.log("erreur")
+            })
     newDivContentDescription.appendChild(newPrice)
 
     let newDivContentSettings = document.createElement('div')
@@ -82,7 +93,7 @@ for (let i in contenuPanierJson) {
 }
 
 // On calcule le prix total du panier et le nombre de produits contenus
-function calculTotaux () {
+function calculTotaux() {
     let quantity = 0
     let price = 0
     for (let i in contenuPanierJson) {
