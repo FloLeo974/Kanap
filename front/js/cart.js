@@ -1,14 +1,17 @@
 // On cible les éléments du DOM:
 const productInformations = document.getElementById("cart__items")
 const totalQuantity = document.getElementById("totalQuantity")
-const totalPrice = document.getElementById("totalPrice")
 
 // On récupère le panier mémorisé dans le local storage
 let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
 let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'objet
 console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 
+const totalPrice = document.getElementById("totalPrice")
+let cartPrice = 0;
+
 // On crée une fonction qui crée et insère les éléments dans la page
+// Par sécurité le prix n'est pas récupéré depuis le local storage mais depuis l'API 
 function afficherPanier(product) {
     let newArticle = document.createElement('article')
     newArticle.classList.add("cart__item")
@@ -50,6 +53,8 @@ function afficherPanier(product) {
             })
             .then(function(value) {
                 newPrice.innerHTML = value.price + " €"
+                cartPrice += value.price * contenuPanierJson[product].quantity
+                totalPrice.innerHTML = cartPrice
             })
             .catch(function(err) {
                 console.log("erreur")
@@ -95,12 +100,28 @@ for (let i in contenuPanierJson) {
 // On calcule le prix total du panier et le nombre de produits contenus
 function calculTotaux() {
     let quantity = 0
-    let price = 0
+    //let price = 0
     for (let i in contenuPanierJson) {
         quantity += contenuPanierJson[i].quantity
-        price += contenuPanierJson[i].price * contenuPanierJson[i].quantity
+    //    price += contenuPanierJson[i].price * contenuPanierJson[i].quantity
     }
     totalQuantity.innerHTML = quantity
-    totalPrice.innerHTML = price
+    //totalPrice.innerHTML = price
 }
 calculTotaux()
+
+/*function calculPrixTotal() {
+    let totalPrice = document.getElementById("totalPrice")
+    let productsPriceParent = document.querySelectorAll(".cart__item__content__description");
+    console.log(productsPriceParent);
+    let productsQuantity = document.querySelectorAll(".itemQuantity");
+
+    let cartPrice = 0;
+    for (let i = 0 ; i < productsPriceParent.length ; i++) {
+        cartPrice += parseInt(productsPriceParent[i].lastElementChild.textContent, 10) * productsQuantity[i].value;
+    };
+    totalPrice.innerHTML = cartPrice;
+}
+
+calculPrixTotal();*/
+
