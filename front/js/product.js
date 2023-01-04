@@ -51,6 +51,17 @@ function recupererInformationsProduit () {
 
 recupererInformationsProduit ()
 
+// Vérification de la quantité saisie par l'utilisateur avec message d'erreur si invalide en sortie de focus
+const inputQuantity = document.getElementById("quantity")
+inputQuantity.addEventListener('change', function(event) {
+    if (
+        inputQuantity.value < 1 ||
+        inputQuantity.value > 100
+        ) {
+            alert("Veuillez saisir un nombre entre 1 et 100")
+        }
+})
+
 /* GESTION DU PANIER: */
 // On récupére l'array qui contient les produits ajoutés au panier 
 // Ou on le crée s'il n'existe pas encore dans le local storage
