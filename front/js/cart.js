@@ -7,6 +7,12 @@ let contenuPanierLinea = localStorage.getItem("obj"); // récupération des donn
 let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'objet
 console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 
+// fonction pour enregistrer le panier dans le LS (utilisé en cas de modification)
+function memoriserPanier() {
+    let contenuPanierLinea = JSON.stringify(contenuPanierJson) // linéarisation de l'objet
+    localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
+}
+
 const totalPrice = document.getElementById("totalPrice")
 let cartPrice = 0;
 
@@ -93,6 +99,13 @@ function afficherPanier(product) {
 
     // écoute des modification de quantité
     newInputQuantity.addEventListener('change', function() {
+        if (
+            newInputQuantity.value < 1 ||
+            newInputQuantity.value > 100
+            ) {
+                alert("Veuillez saisir un nombre entre 1 et 100")
+            }
+        else {
         const changedProduct = newInputQuantity.closest('article')
         const changedPoductDataId = changedProduct.getAttribute('data-id')
         const changedPoductDataColor = changedProduct.getAttribute('data-color')
@@ -100,6 +113,15 @@ function afficherPanier(product) {
         console.log(changedPoductDataId)
         console.log(changedPoductDataColor)
         console.log("il y a eu un changement")
+        newInputQuantity.value = this.value // modification de la quantité dans le DOM
+        console.log(newInputQuantity.value)
+        let existingProduct = (element) => element.id == changedPoductDataId && element.color == changedPoductDataColor // recherche du produit dans l'array
+        let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
+        console.log(existingProductIndex)
+        contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le LS
+        console.table(contenuPanierJson)
+        memoriserPanier()
+        }
     })
 }
 
