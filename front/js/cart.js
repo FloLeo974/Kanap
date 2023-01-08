@@ -90,6 +90,17 @@ function afficherPanier(product) {
     newDeleteItem.classList.add("deleteItem")
     newDeleteItem.innerText = "Supprimer"
     newDivContentSettingsDelete.appendChild(newDeleteItem)
+
+    // écoute des modification de quantité
+    newInputQuantity.addEventListener('change', function() {
+        const changedProduct = newInputQuantity.closest('article')
+        const changedPoductDataId = changedProduct.getAttribute('data-id')
+        const changedPoductDataColor = changedProduct.getAttribute('data-color')
+        console.log(changedProduct)
+        console.log(changedPoductDataId)
+        console.log(changedPoductDataColor)
+        console.log("il y a eu un changement")
+    })
 }
 
 // On parcourt l'array et on utilise la fonction d'affichage
@@ -97,7 +108,8 @@ for (let i in contenuPanierJson) {
     afficherPanier(i)
 }
 
-// On calcule le prix total du panier et le nombre de produits contenus
+// On clacule la quantité total de produits dans le panier
+// On calcule le prix total du panier et le nombre de produits contenus (à supprimer...)
 function calculTotaux() {
     let quantity = 0
     //let price = 0
@@ -124,4 +136,3 @@ calculTotaux()
 }
 
 calculPrixTotal();*/
-
