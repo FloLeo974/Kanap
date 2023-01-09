@@ -19,7 +19,7 @@ let cartPrice = 0;
 
 // On crée une fonction qui crée et insère les éléments dans la page
 // Par sécurité le prix n'est pas récupéré depuis le local storage mais depuis l'API 
-function afficherPanier(product) {
+function afficherProduit(product) {
     let newArticle = document.createElement('article')
     newArticle.classList.add("cart__item")
     newArticle.setAttribute("data-id", contenuPanierJson[product].id)
@@ -128,17 +128,17 @@ function afficherPanier(product) {
 }
 
 // On parcourt l'array et on utilise la fonction d'affichage
-function parcourirPanier() {
+function afficherPanier() {
     for (let i in contenuPanierJson) {
-        afficherPanier(i)
+        afficherProduit(i)
     }
     /*calculPrixTotal()*/
 }
-parcourirPanier()
+afficherPanier()
 
 // On clacule la quantité total de produits dans le panier
 // On calcule le prix total du panier et le nombre de produits contenus (à supprimer...)
-function calculTotaux() {
+function calculQuantiteTotale() {
     let quantity = 0
     //let price = 0
     for (let i in contenuPanierJson) {
@@ -148,7 +148,7 @@ function calculTotaux() {
     totalQuantity.innerHTML = quantity
     //totalPrice.innerHTML = price
 }
-calculTotaux()
+calculQuantiteTotale()
 
 /*function calculPrixTotal() {
     let totalPrice = document.getElementById("totalPrice")
