@@ -1,6 +1,7 @@
 // On cible les éléments du DOM:
 const productInformations = document.getElementById("cart__items")
 const totalQuantity = document.getElementById("totalQuantity")
+const totalPrice = document.getElementById("totalPrice")
 
 // On récupère le panier mémorisé dans le local storage
 let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
@@ -13,7 +14,7 @@ function memoriserPanier() {
     localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
 }
 
-const totalPrice = document.getElementById("totalPrice")
+
 let cartPrice = 0;
 
 // On crée une fonction qui crée et insère les éléments dans la page
@@ -51,6 +52,7 @@ function afficherPanier(product) {
     newDivContentDescription.appendChild(newColor)
 
     let newPrice = document.createElement('p')
+    newPrice.classList.add("cart__item__content__description__price")
     fetch("http://localhost:3000/api/products/" + contenuPanierJson[product].id)
             .then(function(res) {
                 if (res.ok) {
@@ -118,17 +120,21 @@ function afficherPanier(product) {
         let existingProduct = (element) => element.id == changedPoductDataId && element.color == changedPoductDataColor // recherche du produit dans l'array
         let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
         console.log(existingProductIndex)
-        contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le LS
+        contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le panier
         console.table(contenuPanierJson)
-        memoriserPanier()
+        memoriserPanier() // actualisation du LS
         }
     })
 }
 
 // On parcourt l'array et on utilise la fonction d'affichage
-for (let i in contenuPanierJson) {
-    afficherPanier(i)
+function parcourirPanier() {
+    for (let i in contenuPanierJson) {
+        afficherPanier(i)
+    }
+    /*calculPrixTotal()*/
 }
+parcourirPanier()
 
 // On clacule la quantité total de produits dans le panier
 // On calcule le prix total du panier et le nombre de produits contenus (à supprimer...)
@@ -146,15 +152,14 @@ calculTotaux()
 
 /*function calculPrixTotal() {
     let totalPrice = document.getElementById("totalPrice")
-    let productsPriceParent = document.querySelectorAll(".cart__item__content__description");
-    console.log(productsPriceParent);
+    let productsPrice = document.getElementsByClassName("cart__item__content__description__price");
+    console.log(productsPrice);
     let productsQuantity = document.querySelectorAll(".itemQuantity");
 
     let cartPrice = 0;
-    for (let i = 0 ; i < productsPriceParent.length ; i++) {
-        cartPrice += parseInt(productsPriceParent[i].lastElementChild.textContent, 10) * productsQuantity[i].value;
+    for (let i = 0 ; i < contenuPanierJson.length ; i++) {
+        cartPrice += parseInt(productsPrice[i].textContent, 10) * productsQuantity[i].value;
     };
     totalPrice.innerHTML = cartPrice;
 }
-
-calculPrixTotal();*/
+*/
