@@ -24,8 +24,7 @@ fetch("http://localhost:3000/api/products/")
         classPrice[product].innerHTML = value[existingProductIndex].price + " €"
     }
     modificationQuantite()
-    calculQuantiteTotale()
-    calculPrixTotal()
+    calculTotaux()
 })
 .catch(function(err) {
     console.log("erreur")
@@ -132,21 +131,16 @@ function memoriserPanier() {
     localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
 }
 
-function calculQuantiteTotale() {
-    let quantity = 0
-    for (let i in contenuPanierJson) {
-        quantity += contenuPanierJson[i].quantity
-    }
-    totalQuantity.innerHTML = quantity
-}
-
-function calculPrixTotal() {
+function calculTotaux() {
     let productsPrice = document.getElementsByClassName("cart__item__content__description__price")
     let productsQuantity = document.getElementsByClassName("itemQuantity")
 
-    let cartPrice = 0 // On initialise le prix du panier à 0
+    let cartPrice = 0
+    let quantity = 0
     for (let i = 0 ; i < contenuPanierJson.length ; i++) {
         cartPrice += parseInt(productsPrice[i].textContent, 10) * productsQuantity[i].value
+        quantity += contenuPanierJson[i].quantity
     };
     totalPrice.innerHTML = cartPrice
+    totalQuantity.innerHTML = quantity
 }
