@@ -6,7 +6,6 @@ const totalPrice = document.getElementById("totalPrice")
 // On récupère le panier mémorisé dans le local storage
 let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
 let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'objet
-console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 
 // On récupère les informations des produits dans l'API (nous permettra de récupérer les prix via l'API plutôt que le LS)
 fetch("http://localhost:3000/api/products/")
@@ -16,7 +15,6 @@ fetch("http://localhost:3000/api/products/")
     }
 })
 .then(function(value) {
-    console.log(value)
     afficherProduits()
     // Ajout du prix récupéré via l'API
     for (let product in contenuPanierJson) {
@@ -69,7 +67,6 @@ function afficherProduits() {
 
         let newPrice = document.createElement('p')
         newPrice.classList.add("cart__item__content__description__price")
-        console.log(contenuPanierJson[product].id)
         newDivContentDescription.appendChild(newPrice)
 
         let newDivContentSettings = document.createElement('div')
@@ -108,10 +105,9 @@ function modificationQuantite() {
     for (let i in contenuPanierJson) {
         let inputQuantity = document.querySelectorAll('.itemQuantity')
         inputQuantity[i].addEventListener('change', function() {
-            console.log("modification")
             if (
-                inputQuantity.value < 1 ||
-                inputQuantity.value > 100
+                inputQuantity[i].value < 1 ||
+                inputQuantity[i].value > 100
                 ) {
                     alert("Veuillez saisir un nombre entre 1 et 100")
                 }
@@ -119,17 +115,10 @@ function modificationQuantite() {
             const changedProduct = inputQuantity[i].closest('article')
             const changedPoductDataId = changedProduct.getAttribute('data-id')
             const changedPoductDataColor = changedProduct.getAttribute('data-color')
-            console.log(changedProduct)
-            console.log(changedPoductDataId)
-            console.log(changedPoductDataColor)
-            console.log("il y a eu un changement")
-            inputQuantity.value = this.value // modification de la quantité dans le DOM
-            console.log(inputQuantity.value)
+            inputQuantity[i].value = this.value // modification de la quantité dans le DOM
             let existingProduct = (element) => element.id == changedPoductDataId && element.color == changedPoductDataColor // recherche du produit dans l'array
             let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
-            console.log(existingProductIndex)
             contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le panier
-            console.table(contenuPanierJson)
             memoriserPanier() // actualisation du LS
             document.location.reload()
             }
@@ -153,17 +142,11 @@ function calculQuantiteTotale() {
 
 function calculPrixTotal() {
     let productsPrice = document.getElementsByClassName("cart__item__content__description__price")
-    console.log(productsPrice)
     let productsQuantity = document.getElementsByClassName("itemQuantity")
-    console.log(productsQuantity)
 
     let cartPrice = 0 // On initialise le prix du panier à 0
     for (let i = 0 ; i < contenuPanierJson.length ; i++) {
-        console.log(contenuPanierJson.length)
-        console.log(productsPrice[i].textContent)
-        console.log(productsQuantity[i].value)
         cartPrice += parseInt(productsPrice[i].textContent, 10) * productsQuantity[i].value
     };
     totalPrice.innerHTML = cartPrice
-    console.log(cartPrice)
 }
