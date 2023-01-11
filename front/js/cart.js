@@ -23,8 +23,9 @@ fetch("http://localhost:3000/api/products/")
         let classPrice = document.getElementsByClassName('cart__item__content__description__price')
         classPrice[product].innerHTML = value[existingProductIndex].price + " €"
     }
-    modificationQuantite()
-    calculTotaux()
+    modifierQuantite()
+    supprimerProduit()
+    calculerTotaux()
 })
 .catch(function(err) {
     console.log("erreur")
@@ -100,7 +101,7 @@ function afficherProduits() {
     }
 }
 
-function modificationQuantite() {
+function modifierQuantite() {
     for (let i in contenuPanierJson) {
         let inputQuantity = document.querySelectorAll('.itemQuantity')
         inputQuantity[i].addEventListener('change', function() {
@@ -111,7 +112,7 @@ function modificationQuantite() {
                     alert("Veuillez saisir un nombre entre 1 et 100")
                 }
             else {
-            const changedProduct = inputQuantity[i].closest('article')
+            const changedProduct = inputQuantity[i].closest('.cart__item')
             const changedPoductDataId = changedProduct.getAttribute('data-id')
             const changedPoductDataColor = changedProduct.getAttribute('data-color')
             inputQuantity[i].value = this.value // modification de la quantité dans le DOM
@@ -125,13 +126,32 @@ function modificationQuantite() {
     }
 }
 
+function supprimerProduit() {
+    for (let i in contenuPanierJson) {
+        let deleteButton = document.querySelectorAll('.deleteItem')
+        deleteButton[i].addEventListener('click', function() {
+            if (confirm("Vous allez supprimer ce produit?")) {
+                const deletedProduct = deleteButton[i].closest('.cart__item')
+                const deletedPoductDataId = deletedProduct.getAttribute('data-id')
+                const deletedPoductDataColor = deletedProduct.getAttribute('data-color')
+                deletedProduct.remove() // suppression du produit dans le DOM
+                let existingProduct = (element) => element.id == deletedPoductDataId && element.color == deletedPoductDataColor // recherche du produit dans l'array
+                let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit
+                contenuPanierJson.splice(existingProductIndex, 1) // suppression dans le panier
+                memoriserPanier() // actualisation du LS
+                document.location.reload()
+            }
+        })
+    }
+}
+
 // fonction pour enregistrer le panier dans le LS (utilisé en cas de modification)
 function memoriserPanier() {
     let contenuPanierLinea = JSON.stringify(contenuPanierJson) // linéarisation de l'objet
     localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
 }
 
-function calculTotaux() {
+function calculerTotaux() {
     let productsPrice = document.getElementsByClassName("cart__item__content__description__price")
     let productsQuantity = document.getElementsByClassName("itemQuantity")
 
