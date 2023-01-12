@@ -165,10 +165,10 @@ function calculerTotaux() {
     totalQuantity.innerHTML = quantity
 }
 
-// Définition des regex
+// Définition des regex (à compléter)
 let nameRegex = /^[A-zÀ-ÿ]{1,15}[-\s]{0,1}[A-zÀ-ÿ]{1,15}$/
 
-// Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire
+// Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire (à compléter)
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
 const firstNameInput = document.getElementById("firstName")
 const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
@@ -215,6 +215,7 @@ order.addEventListener('click', function() {
         firstNameValue.match(nameRegex) &&
         lastNameValue.match(nameRegex)
         ) {
-            console.log("ok")
+            console.log("ok") // à supprimer plus tard
+            // action à définir
         }
 })
