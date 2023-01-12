@@ -9,27 +9,27 @@ let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'obje
 
 // On récupère les informations des produits dans l'API (nous permettra de récupérer les prix via l'API plutôt que le LS)
 fetch("http://localhost:3000/api/products/")
-.then(function(res) {
-    if (res.ok) {
-    return res.json()
-    }
-})
-.then(function(value) {
-    afficherProduits()
-    // Ajout du prix récupéré via l'API
-    for (let product in contenuPanierJson) {
-        let existingProduct = (element) => element._id == contenuPanierJson[product].id
-        let existingProductIndex = value.findIndex(existingProduct) // indique l'index du produit au niveau de l'API
-        let classPrice = document.getElementsByClassName('cart__item__content__description__price')
-        classPrice[product].innerHTML = value[existingProductIndex].price + " €"
-    }
-    modifierQuantite()
-    supprimerProduit()
-    calculerTotaux()
-})
-.catch(function(err) {
-    console.log("erreur")
-})
+    .then(function(res) {
+        if (res.ok) {
+        return res.json()
+        }
+    })
+    .then(function(value) {
+        afficherProduits()
+        // Ajout du prix récupéré via l'API
+        for (let product in contenuPanierJson) {
+            let existingProduct = (element) => element._id == contenuPanierJson[product].id
+            let existingProductIndex = value.findIndex(existingProduct) // indique l'index du produit au niveau de l'API
+            let classPrice = document.getElementsByClassName('cart__item__content__description__price')
+            classPrice[product].innerHTML = value[existingProductIndex].price + " €"
+        }
+        modifierQuantite()
+        supprimerProduit()
+        calculerTotaux()
+    })
+    .catch(function(err) {
+        console.log("erreur")
+    })
 
 // On crée une fonction qui crée et insère les éléments dans la page
 function afficherProduits() {
@@ -120,7 +120,7 @@ function modifierQuantite() {
             let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
             contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le panier
             memoriserPanier() // actualisation du LS
-            document.location.reload()
+            location.reload()
             }
         })
     }
@@ -139,7 +139,7 @@ function supprimerProduit() {
                 let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit
                 contenuPanierJson.splice(existingProductIndex, 1) // suppression dans le panier
                 memoriserPanier() // actualisation du LS
-                document.location.reload()
+                location.reload()
             }
         })
     }
@@ -164,3 +164,57 @@ function calculerTotaux() {
     totalPrice.innerHTML = cartPrice
     totalQuantity.innerHTML = quantity
 }
+
+// Définition des regex
+let nameRegex = /^[A-zÀ-ÿ]{1,15}[-\s]{0,1}[A-zÀ-ÿ]{1,15}$/
+
+// Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
+const firstNameInput = document.getElementById("firstName")
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
+const lastNameInput = document.getElementById("lastName")
+
+firstNameInput.addEventListener('change', function() {
+    let firstNameValue = document.getElementById("firstName").value
+    if (firstNameValue == "") {
+        firstNameErrorMsg.innerText = "Veuillez saisir votre prénom"
+    }
+    else {
+        if(firstNameValue.match(nameRegex)) {
+        firstNameErrorMsg.innerText = ""
+        }
+        else {
+            firstNameErrorMsg.innerText = "Veuillez saisir un prénom valide"
+        }    
+    }
+})
+
+lastNameInput.addEventListener('change', function() {
+    let lastNameValue = document.getElementById("lastName").value
+    if (lastNameValue == "") {
+        lastNameErrorMsg.innerText = "Veuillez saisir votre nom"
+    }
+    else {
+        if(lastNameValue.match(nameRegex)) {
+        lastNameErrorMsg.innerText = ""
+        }
+        else {
+            lastNameErrorMsg.innerText = "Veuillez saisir un nom valide"
+        }    
+    }
+})
+
+
+// Test des regex au clic sur le bouton commander (à compléter)
+const submitButton = document.getElementById("order")
+
+order.addEventListener('click', function() {
+    let firstNameValue = document.getElementById("firstName").value
+    let lastNameValue = document.getElementById("lastName").value
+    if(
+        firstNameValue.match(nameRegex) &&
+        lastNameValue.match(nameRegex)
+        ) {
+            console.log("ok")
+        }
+})
