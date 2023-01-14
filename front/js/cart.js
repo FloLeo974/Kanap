@@ -263,12 +263,30 @@ emailInput.addEventListener('change', function() {
 // Test des regex au clic sur le bouton commander (à compléter)
 const submitButton = document.getElementById("order")
 
-order.addEventListener('click', function() {
+order.addEventListener('click', function(event) {
+    event.preventDefault()
+    // Création de l'objet contact
+    let contact = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email: document.getElementById("email").value,
+    }
+    console.log(contact)
+
+    let productsTable = []
+    for (let product in contenuPanierJson) {
+        productsTable.push(contenuPanierJson[product].id)
+    }
+    console.log(productsTable)
+    
     let firstNameValue = document.getElementById("firstName").value
     let lastNameValue = document.getElementById("lastName").value
     let addressValue = document.getElementById("address").value
     let cityValue = document.getElementById("city").value
     let emailValue = document.getElementById("email").value
+    
         if(
         firstNameValue.match(nameRegex) &&
         lastNameValue.match(nameRegex) &&
@@ -278,5 +296,8 @@ order.addEventListener('click', function() {
         ) {
             console.log("ok") // à supprimer plus tard
             // action à définir
+        }
+        else { // à supprimer ou modifier
+            alert("Tous les champs doivent être renseignés\nLes informations saisies doivent être valides")
         }
 })
