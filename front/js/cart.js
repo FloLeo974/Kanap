@@ -110,6 +110,7 @@ function modifierQuantite() {
                 inputQuantity[i].value > 100
                 ) {
                     alert("Veuillez saisir un nombre entre 1 et 100")
+                    location.reload()
                 }
             else {
             const changedProduct = inputQuantity[i].closest('.cart__item')
@@ -167,12 +168,22 @@ function calculerTotaux() {
 
 // Définition des regex (à compléter)
 let nameRegex = /^[A-zÀ-ÿ]{1,15}[-\s]{0,1}[A-zÀ-ÿ]{1,15}$/
+let addressRegex = /^[A-z]$/ // à faire
+let cityRegex = /^[A-z]$/ // à faire
+let emailRegex = /^([A-Za-z0-9]+[_.]{0,1}[\w-]+)+@([a-z0-9]+[-]{0,1}[a-z0-9]+)+\.[a-z]{2,}([.]{0,1}[a-z]{2,})*$/
 
 // Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire (à compléter)
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
-const firstNameInput = document.getElementById("firstName")
 const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
+const addressErrorMsg = document.getElementById("addressErrorMsg")
+const cityErrorMsg = document.getElementById("cityErrorMsg")
+const emailErrorMsg = document.getElementById("emailErrorMsg")
+
+const firstNameInput = document.getElementById("firstName")
 const lastNameInput = document.getElementById("lastName")
+const addressInput = document.getElementById("address")
+const cityInput = document.getElementById("city")
+const emailInput = document.getElementById("email")
 
 firstNameInput.addEventListener('change', function() {
     let firstNameValue = document.getElementById("firstName").value
@@ -204,6 +215,50 @@ lastNameInput.addEventListener('change', function() {
     }
 })
 
+addressInput.addEventListener('change', function() {
+    let addressValue = document.getElementById("address").value
+    if (addressValue == "") {
+        addressErrorMsg.innerText = "Veuillez saisir votre adresse"
+    }
+    else {
+        if(addressValue.match(addressRegex)) {
+        addressErrorMsg.innerText = ""
+        }
+        else {
+            addressErrorMsg.innerText = "Veuillez saisir une adresse valide"
+        }    
+    }
+})
+
+cityInput.addEventListener('change', function() {
+    let cityValue = document.getElementById("city").value
+    if (cityValue == "") {
+        cityErrorMsg.innerText = "Veuillez saisir votre ville"
+    }
+    else {
+        if(cityValue.match(cityRegex)) {
+        cityErrorMsg.innerText = ""
+        }
+        else {
+            cityErrorMsg.innerText = "Veuillez saisir une ville valide"
+        }    
+    }
+})
+
+emailInput.addEventListener('change', function() {
+    let emailValue = document.getElementById("email").value
+    if (emailValue == "") {
+        emailErrorMsg.innerText = "Veuillez saisir votre email"
+    }
+    else {
+        if(emailValue.match(emailRegex)) {
+        emailErrorMsg.innerText = ""
+        }
+        else {
+            emailErrorMsg.innerText = "Veuillez saisir un email valide"
+        }    
+    }
+})
 
 // Test des regex au clic sur le bouton commander (à compléter)
 const submitButton = document.getElementById("order")
@@ -211,9 +266,15 @@ const submitButton = document.getElementById("order")
 order.addEventListener('click', function() {
     let firstNameValue = document.getElementById("firstName").value
     let lastNameValue = document.getElementById("lastName").value
-    if(
+    let addressValue = document.getElementById("address").value
+    let cityValue = document.getElementById("city").value
+    let emailValue = document.getElementById("email").value
+        if(
         firstNameValue.match(nameRegex) &&
-        lastNameValue.match(nameRegex)
+        lastNameValue.match(nameRegex) &&
+        addressValue.match(addressRegex) &&
+        cityValue.match(cityRegex) &&
+        emailValue.match(emailRegex)
         ) {
             console.log("ok") // à supprimer plus tard
             // action à définir
