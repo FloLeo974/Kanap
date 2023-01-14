@@ -167,9 +167,9 @@ function calculerTotaux() {
 }
 
 // Définition des regex (à compléter)
-let nameRegex = /^[A-zÀ-ÿ]{1,15}[-\s]{0,1}[A-zÀ-ÿ]{1,15}$/
-let addressRegex = /^[A-z]$/ // à faire
-let cityRegex = /(^[A-ZÀ-ß]([-'\s/\\]{0,1}[a-zA-ZÀ-ÿ]+)*[']{0,1}[a-za-ÿ]$)|(^[A-ZÀ-ß]$)/
+let nameRegex = /^[A-Za-zÀ-ÿ]{1,15}[-\s]{0,1}[A-Za-zÀ-ÿ]{1,15}$/
+let addressRegex = /^[A-Za-zÀ-ÿ0-9]([,'/\\]{0,1}[\s]{0,1}[-A-zÀ-ÿ0-9.]+)+$/
+let cityRegex = /(^[A-Za-zÀ-ÿ]([-'\s/\\]{0,1}[a-zA-ZÀ-ÿ]+)*[']{0,1}[a-za-ÿ]$)|(^[A-ZÀ-ß]$)/
 let emailRegex = /^([A-Za-z0-9]+[_.]{0,1}[\w-]+)+@([a-z0-9]+[-]{0,1}[a-z0-9]+)+\.[a-z]{2,}([.]{0,1}[a-z]{2,})*$/
 
 // Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire (à compléter)
