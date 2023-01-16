@@ -105,10 +105,4 @@ function remplirPanier () {
 // On met à jour le panier au clic
 boutonAjouter.addEventListener('click', function(){ // écoute du clic sur le bouton
     remplirPanier() // activation de la fonction de remplissage du panier
-
-    // A RETIRER UNE FOIS TERMINE: JUSTE POUR VOIR LE RESULTAT DANS LA CONSOLE:
-    let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées (pour tester mais sinon dans cart.js)
-    let contenuPanierJson = JSON.parse(contenuPanierLinea); // mis en format javascript
-    console.table(contenuPanierJson) // affichage test dans la console du contenu du panier
 })
-
