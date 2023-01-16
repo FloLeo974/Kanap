@@ -166,13 +166,13 @@ function calculerTotaux() {
     totalQuantity.innerHTML = quantity
 }
 
-// Définition des regex (à compléter)
+// Définition des regex
 let nameRegex = /^[A-Za-zÀ-ÿ]{1,15}[-\s]{0,1}[A-Za-zÀ-ÿ]{1,15}$/
 let addressRegex = /^[A-Za-zÀ-ÿ0-9]([,'/\\]{0,1}[\s]{0,1}[-A-zÀ-ÿ0-9.]+)+$/
 let cityRegex = /(^[A-Za-zÀ-ÿ]([-'\s/\\]{0,1}[a-zA-ZÀ-ÿ]+)*[']{0,1}[a-za-ÿ]$)|(^[A-ZÀ-ß]$)/
 let emailRegex = /^([A-Za-z0-9]+[_.]{0,1}[\w-]+)+@([a-z0-9]+[-]{0,1}[a-z0-9]+)+\.[a-z]{2,}([.]{0,1}[a-z]{2,})*$/
 
-// Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire (à compléter)
+// Affichage des messages d'erreur ou de succés concernant la validité des textes saisis dans les champs du formulaire
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
 const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
 const addressErrorMsg = document.getElementById("addressErrorMsg")
@@ -260,7 +260,7 @@ emailInput.addEventListener('change', function() {
     }
 })
 
-// Test des regex au clic sur le bouton commander (à compléter)
+// Ecoute du clic sur le bouton commander
 const submitButton = document.getElementById("order")
 
 order.addEventListener('click', function(event) {
@@ -273,31 +273,56 @@ order.addEventListener('click', function(event) {
         city: document.getElementById("city").value,
         email: document.getElementById("email").value,
     }
-    console.log(contact)
 
-    let productsTable = []
+    // Création du tableau de produits
+    let products = []
     for (let product in contenuPanierJson) {
-        productsTable.push(contenuPanierJson[product].id)
+        products.push(contenuPanierJson[product].id)
     }
-    console.log(productsTable)
     
+    // Vérification de la validité du texte saisi dans les champs et que le panier n'est pas vide
     let firstNameValue = document.getElementById("firstName").value
     let lastNameValue = document.getElementById("lastName").value
     let addressValue = document.getElementById("address").value
     let cityValue = document.getElementById("city").value
     let emailValue = document.getElementById("email").value
-    
-        if(
-        firstNameValue.match(nameRegex) &&
-        lastNameValue.match(nameRegex) &&
-        addressValue.match(addressRegex) &&
-        cityValue.match(cityRegex) &&
-        emailValue.match(emailRegex)
-        ) {
-            console.log("ok") // à supprimer plus tard
-            // action à définir
+
+    if(
+    firstNameValue.match(nameRegex) &&
+    lastNameValue.match(nameRegex) &&
+    addressValue.match(addressRegex) &&
+    cityValue.match(cityRegex) &&
+    emailValue.match(emailRegex) &&
+    contenuPanierJson.length !== 0
+    ) {
+        // Si tout est conforme envoie de la commande à l'API et récupération de l'identifiant
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contact,
+                products
+            })
+            })
+            .then(function(res) {
+                if (res.ok) {
+                return res.json();
+                }
+            })
+            .then(function(value) {
+                location.href = "confirmation.html?orderid=" + value.orderId;
+            })
         }
-        else { // à supprimer ou modifier
-            alert("Tous les champs doivent être renseignés\nLes informations saisies doivent être valides")
+    else {
+        // Sinon affichage de messages d'erreur
+        if( contenuPanierJson.length == 0) {
+            alert("Votre panier est vide")
         }
+        else {
+        alert("Tous les champs doivent être renseignés\nLes informations saisies doivent être valides")
+        }
+    }
 })
