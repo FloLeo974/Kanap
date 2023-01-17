@@ -7,24 +7,25 @@ const totalPrice = document.getElementById("totalPrice")
 let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
 let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'objet
 
+if (contenuPanierJson !== null) {
 // On récupère les informations des produits dans l'API (nous permettra de récupérer les prix via l'API plutôt que le LS)
-fetch("http://localhost:3000/api/products/")
-    .then(function(res) {
-        if (res.ok) {
-        return res.json()
-        }
-    })
-    .then(function(value) {
-        afficherProduits()
-        afficherPrix(value)
-        modifierQuantite()
-        supprimerProduit()
-        calculerTotaux()
-    })
-    .catch(function(err) {
-        console.log("erreur")
-    })
-
+    fetch("http://localhost:3000/api/products/")
+        .then(function(res) {
+            if (res.ok) {
+            return res.json()
+            }
+        })
+        .then(function(value) {
+            afficherProduits()
+            afficherPrix(value)
+            modifierQuantite()
+            supprimerProduit()
+            calculerTotaux()
+        })
+        .catch(function(err) {
+            console.log("erreur")
+        })
+}
 // On crée une fonction qui crée et insère les éléments dans la page
 function afficherProduits() {
     for (let product in contenuPanierJson) {
@@ -266,9 +267,15 @@ emailInput.addEventListener('change', function() {
 // Envoie de la commande au clic sur le bouton commander
 const submitButton = document.getElementById("order")
 
+
 order.addEventListener('click', function(e) {
     e.preventDefault()
-    sendOrder()
+    if (contenuPanierJson == null) {
+        alert("Votre panier est vide")
+    }
+    else{
+        sendOrder()
+    }
 })
 
 // On envoie la commande et on récupère son identifiant
@@ -326,7 +333,7 @@ function sendOrder() {
     }
     else {
         // Sinon affichage de messages d'erreur
-        if( contenuPanierJson.length == 0) {
+        if(contenuPanierJson.length == 0 || contenuPanierJson == null) {
             alert("Votre panier est vide")
         }
         else {
