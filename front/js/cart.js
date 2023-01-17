@@ -149,7 +149,7 @@ function supprimerProduit() {
     }
 }
 
-// fonction pour enregistrer le panier dans le LS (utilisé en cas de modification)
+// fonction pour enregistrer le panier dans le LS (utilisé en cas de modification ou de suppression)
 function memoriserPanier() {
     let contenuPanierLinea = JSON.stringify(contenuPanierJson) // linéarisation de l'objet
     localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
@@ -263,11 +263,16 @@ emailInput.addEventListener('change', function() {
     }
 })
 
-// Ecoute du clic sur le bouton commander
+// Envoie de la commande au clic sur le bouton commander
 const submitButton = document.getElementById("order")
 
-order.addEventListener('click', function(event) {
-    event.preventDefault()
+order.addEventListener('click', function(e) {
+    e.preventDefault()
+    sendOrder()
+})
+
+// On envoie la commande et on récupère son identifiant
+function sendOrder() {
     // Création de l'objet contact
     let contact = {
         firstName: document.getElementById("firstName").value,
@@ -282,7 +287,7 @@ order.addEventListener('click', function(event) {
     for (let product in contenuPanierJson) {
         products.push(contenuPanierJson[product].id)
     }
-    
+
     // Vérification de la validité du texte saisi dans les champs et que le panier n'est pas vide
     let firstNameValue = document.getElementById("firstName").value
     let lastNameValue = document.getElementById("lastName").value
@@ -298,7 +303,7 @@ order.addEventListener('click', function(event) {
     emailValue.match(emailRegex) &&
     contenuPanierJson.length !== 0
     ) {
-        // Si tout est conforme envoie de la commande à l'API et récupération de l'identifiant
+        // Si tout est conforme envoie la requête à l'API
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: {
@@ -309,16 +314,16 @@ order.addEventListener('click', function(event) {
                 contact,
                 products
             })
-            })
-            .then(function(res) {
-                if (res.ok) {
-                return res.json();
-                }
-            })
-            .then(function(value) {
-                location.href = "confirmation.html?orderid=" + value.orderId;
-            })
-        }
+        })
+        .then(function(res) {
+            if (res.ok) {
+            return res.json();
+            }
+        })
+        .then(function(value) {
+            location.href = "confirmation.html?orderid=" + value.orderId;
+        })
+    }
     else {
         // Sinon affichage de messages d'erreur
         if( contenuPanierJson.length == 0) {
@@ -328,4 +333,4 @@ order.addEventListener('click', function(event) {
         alert("Tous les champs doivent être renseignés\nLes informations saisies doivent être valides")
         }
     }
-})
+}
