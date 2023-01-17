@@ -6,3 +6,6 @@ const orderNumber = searchParams.get('orderid')
 // On affiche le numéro de commande
 const orderId = document.getElementById("orderId")
 orderId.innerText = orderNumber
+
+// On vide le panier
+localStorage.removeItem("obj")
