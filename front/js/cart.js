@@ -16,13 +16,7 @@ fetch("http://localhost:3000/api/products/")
     })
     .then(function(value) {
         afficherProduits()
-        // Ajout du prix récupéré via l'API
-        for (let product in contenuPanierJson) {
-            let existingProduct = (element) => element._id == contenuPanierJson[product].id
-            let existingProductIndex = value.findIndex(existingProduct) // indique l'index du produit au niveau de l'API
-            let classPrice = document.getElementsByClassName('cart__item__content__description__price')
-            classPrice[product].innerHTML = value[existingProductIndex].price + " €"
-        }
+        afficherPrix(value)
         modifierQuantite()
         supprimerProduit()
         calculerTotaux()
@@ -98,6 +92,15 @@ function afficherProduits() {
         newDeleteItem.classList.add("deleteItem")
         newDeleteItem.innerText = "Supprimer"
         newDivContentSettingsDelete.appendChild(newDeleteItem)
+    }
+}
+
+function afficherPrix(value) {
+    for (let product in contenuPanierJson) {
+        let existingProduct = (element) => element._id == contenuPanierJson[product].id
+        let existingProductIndex = value.findIndex(existingProduct) // indique l'index du produit au niveau de l'API
+        let classPrice = document.getElementsByClassName('cart__item__content__description__price')
+        classPrice[product].innerHTML = value[existingProductIndex].price + " €"
     }
 }
 
