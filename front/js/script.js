@@ -4,12 +4,12 @@ const items = document.getElementById("items")
 // On crée une fonction pour afficher tous les produits
 function afficherProduits(product) {
     for (let i in product){
-        let newLien = document.createElement('a')
-        newLien.setAttribute("href", "./product.html?id=" + product[i]._id)
-        items.appendChild(newLien)
+        let newLink = document.createElement('a')
+        newLink.setAttribute("href", "./product.html?id=" + product[i]._id)
+        items.appendChild(newLink)
 
         let newArticle = document.createElement('article')
-        newLien.appendChild(newArticle)
+        newLink.appendChild(newArticle)
 
         let newImage = document.createElement('img')
         newImage.setAttribute("src", product[i].imageUrl)
@@ -29,8 +29,7 @@ function afficherProduits(product) {
 }
 
 // On récupère les informations des produits au niveau de l'API et on appelle la fonction d'affichage
-function recupererProduits () {
-    fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products")
     .then(function(res) {
         if (res.ok) {
         return res.json()
@@ -42,6 +41,3 @@ function recupererProduits () {
     .catch(function(err) {
         console.log("erreur")
     })
-}
-
-recupererProduits ()
