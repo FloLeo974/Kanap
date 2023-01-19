@@ -34,8 +34,7 @@ function afficherInformationsProduit (product) {
 }
 
 // On récupère les informations du produit au niveau de l'API à partir de son id et on appelle la fonction d'affichage
-function recupererInformationsProduit () {
-    fetch("http://localhost:3000/api/products/"+idProduct)
+fetch("http://localhost:3000/api/products/"+idProduct)
     .then(function(res) {
         if (res.ok) {
         return res.json()
@@ -47,9 +46,6 @@ function recupererInformationsProduit () {
     .catch(function(err) {
         console.log("erreur")
     })
-}
-
-recupererInformationsProduit ()
 
 // Vérification de la quantité saisie par l'utilisateur avec message d'erreur si invalide en sortie de focus
 const inputQuantity = document.getElementById("quantity")
@@ -84,7 +80,8 @@ function remplirPanier () {
         let existingProduct = (element) => element.id == idProduct && element.color == colorProductSelected // recherche du produit dans l'array
         let existingProductIndex = contenuPanier.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
         if (existingProductIndex == -1) { // si le produit n'est pas encore présent dans le panier
-        contenuPanier.push({ 
+            // ajout d'une ligne dans l'array avec le contenu ajouté
+            contenuPanier.push({ 
             id: idProduct,
             quantity: quantityProduct,
             color: colorProductSelected ,
@@ -92,7 +89,7 @@ function remplirPanier () {
             price: Number(priceProduct.textContent),
             imageUrl: document.querySelector(".item__img > img").getAttribute("src"),
             altTxt: document.querySelector(".item__img > img").getAttribute("alt")
-            })// ajout d'une ligne dans l'array avec le contenu ajouté
+            })
         }
         else { // si le produit est déjà dans le panier
             contenuPanier[existingProductIndex].quantity += quantityProduct // addition de la nouvelle quantité à la précédente

@@ -26,6 +26,7 @@ if (contenuPanierJson !== null) {
             console.log("erreur")
         })
 }
+
 // On crée une fonction qui crée et insère les éléments dans la page
 function afficherProduits() {
     for (let product in contenuPanierJson) {
@@ -135,7 +136,7 @@ function supprimerProduit() {
     for (let i in contenuPanierJson) {
         let deleteButton = document.querySelectorAll('.deleteItem')
         deleteButton[i].addEventListener('click', function() {
-            if (confirm("Vous allez supprimer ce produit?")) {
+            if (confirm("Vous allez supprimer ce produit")) {
                 const deletedProduct = deleteButton[i].closest('.cart__item')
                 const deletedPoductDataId = deletedProduct.getAttribute('data-id')
                 const deletedPoductDataColor = deletedProduct.getAttribute('data-color')
