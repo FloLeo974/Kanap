@@ -268,7 +268,6 @@ emailInput.addEventListener('change', function() {
 // Envoie de la commande au clic sur le bouton commander
 const submitButton = document.getElementById("order")
 
-
 order.addEventListener('click', function(e) {
     e.preventDefault()
     if (contenuPanierJson == null) {
