@@ -4,10 +4,10 @@ const totalQuantity = document.getElementById("totalQuantity")
 const totalPrice = document.getElementById("totalPrice")
 
 // On récupère le panier mémorisé dans le local storage
-let contenuPanierLinea = localStorage.getItem("obj"); // récupération des données stockées
-let contenuPanierJson = JSON.parse(contenuPanierLinea); // reformation de l'objet
+let cartContentLinea = localStorage.getItem("obj"); // récupération des données stockées
+let cartContentJson = JSON.parse(cartContentLinea); // reformation de l'objet
 
-if (contenuPanierJson !== null) {
+if (cartContentJson !== null) {
 // On récupère les informations des produits dans l'API (nous permettra de récupérer les prix via l'API plutôt que le LS)
     fetch("http://localhost:3000/api/products/")
         .then(function(res) {
@@ -29,21 +29,21 @@ if (contenuPanierJson !== null) {
 
 // On crée une fonction qui crée et insère les éléments dans la page
 function afficherProduits() {
-    for (let product in contenuPanierJson) {
+    for (let product in cartContentJson) {
         let newArticle = document.createElement('article')
         newArticle.classList.add("cart__item")
-        newArticle.setAttribute("data-id", contenuPanierJson[product].id)
-        newArticle.setAttribute("data-color", contenuPanierJson[product].color)
+        newArticle.setAttribute("data-id", cartContentJson[product].id)
+        newArticle.setAttribute("data-color", cartContentJson[product].color)
         productInformations.appendChild(newArticle)
 
-        let newDivImg = document.createElement('div')
-        newDivImg.classList.add("cart__item__img")
-        newArticle.appendChild(newDivImg)
+        let newDivImage = document.createElement('div')
+        newDivImage.classList.add("cart__item__img")
+        newArticle.appendChild(newDivImage)
 
         let newImage = document.createElement('img')
-        newImage.setAttribute("src", contenuPanierJson[product].imageUrl)
-        newImage.setAttribute("alt", contenuPanierJson[product].altTxt)
-        newDivImg.appendChild(newImage)
+        newImage.setAttribute("src", cartContentJson[product].imageUrl)
+        newImage.setAttribute("alt", cartContentJson[product].altTxt)
+        newDivImage.appendChild(newImage)
 
         let newDivContent = document.createElement('div')
         newDivContent.classList.add("cart__item__content")
@@ -54,11 +54,11 @@ function afficherProduits() {
         newDivContent.appendChild(newDivContentDescription)
 
         let newTitle = document.createElement('h2')
-        newTitle.innerText = contenuPanierJson[product].name
+        newTitle.innerText = cartContentJson[product].name
         newDivContentDescription.appendChild(newTitle)
 
         let newColor = document.createElement('p')
-        newColor.innerText = contenuPanierJson[product].color
+        newColor.innerText = cartContentJson[product].color
         newDivContentDescription.appendChild(newColor)
 
         let newPrice = document.createElement('p')
@@ -83,7 +83,7 @@ function afficherProduits() {
         newInputQuantity.setAttribute("name", "itemQuantity")
         newInputQuantity.setAttribute("min", 1)
         newInputQuantity.setAttribute("max", 100)
-        newInputQuantity.setAttribute("value", contenuPanierJson[product].quantity)
+        newInputQuantity.setAttribute("value", cartContentJson[product].quantity)
         newDivContentSettingsQuantity.appendChild(newInputQuantity)
 
         let newDivContentSettingsDelete = document.createElement('div')
@@ -98,8 +98,8 @@ function afficherProduits() {
 }
 
 function afficherPrix(value) {
-    for (let product in contenuPanierJson) {
-        let existingProduct = (element) => element._id == contenuPanierJson[product].id
+    for (let product in cartContentJson) {
+        let existingProduct = (element) => element._id == cartContentJson[product].id
         let existingProductIndex = value.findIndex(existingProduct) // indique l'index du produit au niveau de l'API
         let classPrice = document.getElementsByClassName('cart__item__content__description__price')
         classPrice[product].innerHTML = value[existingProductIndex].price + " €"
@@ -107,7 +107,7 @@ function afficherPrix(value) {
 }
 
 function modifierQuantite() {
-    for (let i in contenuPanierJson) {
+    for (let i in cartContentJson) {
         let inputQuantity = document.querySelectorAll('.itemQuantity')
         inputQuantity[i].addEventListener('change', function() {
             if (
@@ -123,8 +123,8 @@ function modifierQuantite() {
             const changedPoductDataColor = changedProduct.getAttribute('data-color')
             inputQuantity[i].value = this.value // modification de la quantité dans le DOM
             let existingProduct = (element) => element.id == changedPoductDataId && element.color == changedPoductDataColor // recherche du produit dans l'array
-            let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
-            contenuPanierJson[existingProductIndex].quantity = Number(this.value) // modification dans le panier
+            let existingProductIndex = cartContentJson.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
+            cartContentJson[existingProductIndex].quantity = Number(this.value) // modification dans le panier
             memoriserPanier() // actualisation du LS
             location.reload()
             }
@@ -133,7 +133,7 @@ function modifierQuantite() {
 }
 
 function supprimerProduit() {
-    for (let i in contenuPanierJson) {
+    for (let i in cartContentJson) {
         let deleteButton = document.querySelectorAll('.deleteItem')
         deleteButton[i].addEventListener('click', function() {
             if (confirm("Vous allez supprimer ce produit")) {
@@ -142,8 +142,8 @@ function supprimerProduit() {
                 const deletedPoductDataColor = deletedProduct.getAttribute('data-color')
                 deletedProduct.remove() // suppression du produit dans le DOM
                 let existingProduct = (element) => element.id == deletedPoductDataId && element.color == deletedPoductDataColor // recherche du produit dans l'array
-                let existingProductIndex = contenuPanierJson.findIndex(existingProduct) // indique l'index du produit
-                contenuPanierJson.splice(existingProductIndex, 1) // suppression dans le panier
+                let existingProductIndex = cartContentJson.findIndex(existingProduct) // indique l'index du produit
+                cartContentJson.splice(existingProductIndex, 1) // suppression dans le panier
                 memoriserPanier() // actualisation du LS
                 location.reload()
             }
@@ -153,8 +153,8 @@ function supprimerProduit() {
 
 // fonction pour enregistrer le panier dans le LS (utilisé en cas de modification ou de suppression)
 function memoriserPanier() {
-    let contenuPanierLinea = JSON.stringify(contenuPanierJson) // linéarisation de l'objet
-    localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
+    let cartContentLinea = JSON.stringify(cartContentJson) // linéarisation de l'objet
+    localStorage.setItem("obj", cartContentLinea) // stockage dans le local storage
 }
 
 function calculerTotaux() {
@@ -163,9 +163,9 @@ function calculerTotaux() {
 
     let cartPrice = 0
     let quantity = 0
-    for (let i = 0 ; i < contenuPanierJson.length ; i++) {
+    for (let i = 0 ; i < cartContentJson.length ; i++) {
         cartPrice += parseInt(productsPrice[i].textContent, 10) * productsQuantity[i].value
-        quantity += contenuPanierJson[i].quantity
+        quantity += cartContentJson[i].quantity
     };
     totalPrice.innerHTML = cartPrice
     totalQuantity.innerHTML = quantity
@@ -270,7 +270,7 @@ const submitButton = document.getElementById("order")
 
 order.addEventListener('click', function(e) {
     e.preventDefault()
-    if (contenuPanierJson == null) {
+    if (cartContentJson == null) {
         alert("Votre panier est vide")
     }
     else{
@@ -291,8 +291,8 @@ function sendOrder() {
 
     // Création du tableau de produits
     let products = []
-    for (let product in contenuPanierJson) {
-        products.push(contenuPanierJson[product].id)
+    for (let product in cartContentJson) {
+        products.push(cartContentJson[product].id)
     }
 
     // Vérification de la validité du texte saisi dans les champs et que le panier n'est pas vide
@@ -308,7 +308,7 @@ function sendOrder() {
     addressValue.match(addressRegex) &&
     cityValue.match(cityRegex) &&
     emailValue.match(emailRegex) &&
-    contenuPanierJson.length !== 0
+    cartContentJson.length !== 0
     ) {
         // Si tout est conforme envoie la requête à l'API
         fetch("http://localhost:3000/api/products/order", {
@@ -333,7 +333,7 @@ function sendOrder() {
     }
     else {
         // Sinon affichage de messages d'erreur
-        if(contenuPanierJson.length == 0 || contenuPanierJson == null) {
+        if(cartContentJson.length == 0 || cartContentJson == null) {
             alert("Votre panier est vide")
         }
         else {

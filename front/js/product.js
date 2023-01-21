@@ -11,7 +11,7 @@ const priceProduct = document.getElementById("price")
 const descriptionProduct = document.getElementById("description")
 const colorsProduct = document.getElementById("colors")
 
-const boutonAjouter = document.getElementById("addToCart")
+const addButton = document.getElementById("addToCart")
 
 /* GESTION DE L'AFFICHAGE */
 // On crée une fonction pour afficher les informations du produit sur la page
@@ -61,12 +61,12 @@ inputQuantity.addEventListener('change', function(event) {
 /* GESTION DU PANIER: */
 // On récupére l'array qui contient les produits ajoutés au panier 
 // Ou on le crée s'il n'existe pas encore dans le local storage
-let contenuPanier = JSON.parse(localStorage.getItem("obj")) || []
+let cartContent = JSON.parse(localStorage.getItem("obj")) || []
 
 // On crée une fonction pour mémoriser le contenu du panier dans le local storage
 function memoriserPanier() {
-    let contenuPanierLinea = JSON.stringify(contenuPanier) // linéarisation de l'objet
-    localStorage.setItem("obj", contenuPanierLinea) // stockage dans le local storage
+    let cartContentLinea = JSON.stringify(cartContent) // linéarisation de l'objet
+    localStorage.setItem("obj", cartContentLinea) // stockage dans le local storage
 }
 
 // On gère le remplissage du panier
@@ -78,10 +78,10 @@ function remplirPanier () {
     }
     else { // si le produit n'est pas encore dans le panier on l'ajoute sinon on met seulement à jour la quantité
         let existingProduct = (element) => element.id == idProduct && element.color == colorProductSelected // recherche du produit dans l'array
-        let existingProductIndex = contenuPanier.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
+        let existingProductIndex = cartContent.findIndex(existingProduct) // indique l'index du produit s'il existe sinon "-1"
         if (existingProductIndex == -1) { // si le produit n'est pas encore présent dans le panier
             // ajout d'une ligne dans l'array avec le contenu ajouté
-            contenuPanier.push({ 
+            cartContent.push({ 
             id: idProduct,
             quantity: quantityProduct,
             color: colorProductSelected ,
@@ -92,7 +92,7 @@ function remplirPanier () {
             })
         }
         else { // si le produit est déjà dans le panier
-            contenuPanier[existingProductIndex].quantity += quantityProduct // addition de la nouvelle quantité à la précédente
+            cartContent[existingProductIndex].quantity += quantityProduct // addition de la nouvelle quantité à la précédente
         }
         alert("Votre produit a été ajouté au panier") // message de succés pour l'utilisateur
     }
@@ -100,6 +100,6 @@ function remplirPanier () {
 }
 
 // On met à jour le panier au clic
-boutonAjouter.addEventListener('click', function(){ // écoute du clic sur le bouton
+addButton.addEventListener('click', function(){ // écoute du clic sur le bouton
     remplirPanier() // activation de la fonction de remplissage du panier
 })
