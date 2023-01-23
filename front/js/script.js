@@ -18,7 +18,7 @@ function afficherProduits(product) {
 
         let newName = document.createElement('h3')
         newName.classList.add("productName")
-        newName.innerHTML = product[i].name
+        newName.innerText = product[i].name
         newArticle.appendChild(newName)
 
         let newDescription = document.createElement('p')
